@@ -3,25 +3,37 @@ use v6;
 use Test;
 use Pair::More;
 
-pass 'start testing';
+my \p = Pair::More.new(10, 20);
 
-ok Pair::More.new;
+isa-ok p, Pair::More;
 
-my $p = Pair::More.new(10, 20);
+is p.key,   10, 'get p.key';
+is p.value, 20, 'get p.value';
 
-is $p.key,   10, 'get .key';
-is $p.value, 20, 'get .value';
+p.key   = 30;
+p.value = 40;
 
-$p.key   = 30;
-$p.value = 40;
+is p.key,   30, 'set p.key';
+is p.value, 40, 'set p.value';
 
-is $p.key,   30, 'set .key';
-is $p.value, 40, 'set .value';
+p.set(50, 60);
 
-$p.set(50, 60);
+is p.key,   50, 'p.set(...).key';
+is p.value, 60, 'p.set(...).value';
 
-is $p.key,   50, 'setted .key';
-is $p.value, 60, 'setted .value';
+p.replace(Pair::More.new(1, 2));
+
+is p.key,   1, 'replaced key';
+is p.value, 2, 'replaced value';
+
+is p.Str,  '1 => 2', '.Str';
+is p.gist, '1 => 2', '.gist';
+is p.perl, 'Pair::More.new(1, 2)', '.perl';
+
+isa-ok p.Pair,  Pair;
+isa-ok p.Array, Array;
+isa-ok p.Hash,  Hash;
+isa-ok p.List,  List;
 
 done-testing;
 

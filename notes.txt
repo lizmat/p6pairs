@@ -8,9 +8,14 @@ Name:
   Pair::Special
   Pair::More
   Pair::Super
+  Pair::Simple
+  Pair::Tiny
+  Pair::ReadWrite, Pair::RW
+  Pair::Again
 
   Data::Pair
   Tuple::Pair
+  NonCore::Pair
 
   Duo::
   PairX::
@@ -45,14 +50,6 @@ Core Perl 6 Pair class
     has $.value is default(Nil) is rw;
   }
 
-roles Positional and Associative
-
-  method AT-POS
-  method EXISTS-POS
-  method AT-KEY
-  method EXISTS-KEY
-  method STORE
-
 Alternative ways:
 
   class SomePair {  # key/value of type Any
@@ -79,3 +76,11 @@ Alternative ways:
   class SomePair::Super       is SomePair does Positional does Associative {...}
   class SomePair::Positional  is SomePair does Positional  {...}
   class SomePair::Associative is SomePair does Associative {...}
+
+roles Positional and Associative
+
+  method AT-POS
+  method EXISTS-POS
+  method AT-KEY
+  method EXISTS-KEY
+  method STORE
