@@ -1,5 +1,5 @@
 
-my multi sub trait_mod:<is>(Method:D \m, :$aka!) { m.package.^add_method(~$_, m) for $aka }  # see Method::Also
+my multi sub trait_mod:<is>(Method:D \m, :$aka!) { m.package.^add_method(~$_, m) for @$aka }  # see Method::Also
 
 role Pair::More::Role[::KeyType, ::ValueType] {
     has KeyType   $.key   is rw;
@@ -8,7 +8,7 @@ role Pair::More::Role[::KeyType, ::ValueType] {
 
 class Pair::More does Pair::More::Role[Any, Any] {
 
-    multi method elems(|) is aka<Numeric Int> { 2 }
+    method elems is aka<Numeric Int> { 2 }
 
     multi method new($key, $value --> ::?CLASS) { self.new(:$key, :$value) }
 
@@ -24,12 +24,13 @@ class Pair::More does Pair::More::Role[Any, Any] {
     method clear     (--> ::?CLASS) is aka<reset>            { ($!key, $!value) = (Nil, Nil);       self }
     method inverted  (--> ::?CLASS) is aka<reversed flipped> { ($!key, $!value) = ($!value, $!key); self }
     method replace(\p --> ::?CLASS)                          { ($!key, $!value) = (p.key, p.value); self }
-    method set(\k, \v --> ::?CLASS)                          { ($!key, $!value) = (k, v);           self }
+    method set(\k, \v --> ::?CLASS) is aka<update>           { ($!key, $!value) = (k, v);           self }
 
-    method Pair (--> Pair)              {  $!key=>$!value  }
-    method Hash (--> Hash) is aka<hash> { {$!key=>$!value} }
-    method List (--> List) is aka<list> { ($!key, $!value) }
-    method Array(--> Array)             { [$!key, $!value] }
+    method Pair (--> Pair)              { self ??  ($!key=>$!value) !! Pair  }  # "Precedence of => is too loose to use inside ?? !!; please parenthesize"
+    method ohash(--> Hash)              { self ?? :{$!key=>$!value} !! Hash  }
+    method Hash (--> Hash) is aka<hash> { self ??  {$!key=>$!value} !! Hash  }
+    method List (--> List) is aka<list> { self ??  ($!key, $!value) !! List  }
+    method Array(--> Array)             { self ??  [$!key, $!value] !! Array }
 
     method hashed($k='key', $v='value' --> Hash) { {$k=>$!key, $v=>$!value} }
 
