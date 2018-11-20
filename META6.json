@@ -6,6 +6,10 @@
   "authors"       : [ "Lucas Buchala" ],
   "license"       : "Artistic-2.0",
   "provides"      : {
+                      "Pair::More"       : "lib/Pair/More.pm",
+                      "Pair::More::Hash" : "lib/Pair/More/Hash.pm",
+                      "Pair::More::List" : "lib/Pair/More/List.pm",
+                      "Pair::More::Util" : "lib/Pair/More/Util.pm"
                     },
   "depends"       : [],
   "build-depends" : [],
