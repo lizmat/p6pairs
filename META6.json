@@ -1,0 +1,13 @@
+{
+  "perl"          : "6.c",
+  "name"          : "Pair::More",
+  "version"       : "0.0.1",
+  "description"   : "A simple pair object for Perl 6",
+  "authors"       : [ "Lucas Buchala" ],
+  "license"       : "Artistic-2.0",
+  "provides"      : {
+                    },
+  "depends"       : [],
+  "build-depends" : [],
+  "source-url"    : "https://github.com/lucasbuchala/p6pairs.git"
+}
