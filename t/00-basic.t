@@ -56,6 +56,7 @@ is-deeply Duo.Array, Array, 'type to array';
 is-deeply Duo.Hash,  Hash,  'type to hash';
 is-deeply Duo.List,  List,  'type to list';
 is-deeply Duo.Range, Range, 'type to range';
+is-deeply Duo.Slip,  Slip,  'type to slip';
 
 is Duo.gist, '(Duo)', 'type .gist';
 is Duo.perl, 'Duo',   'type .perl';

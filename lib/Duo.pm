@@ -32,10 +32,11 @@ class Duo does Duo::Role[Any, Any] {
     method inverted  (--> ::?CLASS) is aka<reversed flipped> { ($!key, $!value) = ($!value, $!key); self }
     method replace(\p --> ::?CLASS)                          { ($!key, $!value) = (p.key, p.value); self }
 
-    method Pair (--> Pair)                { self ?? ($!key=>$!value) !! Pair  }
-    method List (--> List) is aka<list>   { self ?? ($!key, $!value) !! List  }
-    method Array(--> Array)               { self ?? [$!key, $!value] !! Array }
-    method Range(--> Range) is aka<range> { self ?? ($!key..$!value) !! Range }
+    method Pair (--> Pair)                { self ??  ($!key=>$!value) !! Pair  }
+    method List (--> List) is aka<list>   { self ??  ($!key, $!value) !! List  }
+    method Array(--> Array)               { self ??  [$!key, $!value] !! Array }
+    method Range(--> Range) is aka<range> { self ??  ($!key..$!value) !! Range }
+    method Slip (--> Slip)                { self ?? |($!key, $!value) !! Slip  }
 
     proto method Hash(|) is aka<hash> {*}
     multi method Hash(::?CLASS:U: --> Hash) { Hash }
