@@ -1,4 +1,6 @@
 
+DEVELOPMENT NOTES
+
 Name:
 
   Pair::Data
@@ -17,9 +19,19 @@ Name:
   Tuple::Pair
   NonCore::Pair
 
-  Duo::
+  Pair::
   PairX::
   Paired::
+  Pairing::
+  Pairable::
+
+  Duo::
+  Par::
+  Paire::
+  Couple::
+
+  Repair::
+  Despair::
 
 Junctions
 
@@ -52,12 +64,14 @@ Core Perl 6 Pair class
 
 Alternative ways:
 
+  Both key and value as read-writable attributes.
+
   class SomePair {  # key/value of type Any
     has $.key   is rw;
     has $.value is rw;
   }
 
-  class SomePair {  # type Mu
+  class SomePair {  # key/value of type Mu
     has Mu $.key   is rw;
     has Mu $.value is rw;
   }
@@ -67,11 +81,13 @@ Alternative ways:
     has ValueType $.value is rw;
   }
 
-  class SomePair does Paired[...] {...}
-  class SomePair does Paired[Mu,  Mu ] {...}
-  class SomePair does Paired[Any, Any] {...}
-  class SomePair does Paired[Str, Any] {...}  # string key
-  class SomePair does Paired[Str, Str] {...}  # strictly stringy
+  role Paired[::KeyType = SomeType, ::ValueType = SomeType] {...}  # default types
+
+  class SomePair does Paired[Mu,   Mu  ] {...}
+  class SomePair does Paired[Any,  Any ] {...}
+  class SomePair does Paired[Cool, Cool] {...}
+  class SomePair does Paired[Str,  Any ] {...}  # string key
+  class SomePair does Paired[Str,  Str ] {...}  # strictly stringy
 
   class SomePair::Super       is SomePair does Positional does Associative {...}
   class SomePair::Positional  is SomePair does Positional  {...}
@@ -84,3 +100,37 @@ roles Positional and Associative
   method AT-KEY
   method EXISTS-KEY
   method STORE
+
+Associative:
+
+  Getting
+
+    $value = $pair{$key};
+
+    if $key matches $pair.key, then returns $pair.value
+    otherwise ...
+
+  Setting
+
+    $pair{$key} = $value;
+
+    if $key matches $pair.key, then sets $pair.value to $value
+    otherwise ...
+
+Positional:
+
+  Getting
+
+    $pair[0]  #=> returns key
+    $pair[1]  #=> returns value
+    $pair[2]  #=> returns what? Nil, Any, Mu, The::Pair::Object? fail? die? warn?
+
+  Setting
+
+    $pair[0] = 'key';    # sets key
+    $pair[1] = 'value';  # sets value
+    $pair[2] = ... ;     # do what? fail? die?
+
+Method names:
+  mirror, mirrored
+  homogeneous, heterogeneous k/v types

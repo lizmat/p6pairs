@@ -9,7 +9,8 @@ ok p, 'return is true';
 
 isa-ok p, Pair::More;
 
-# Testing aliases of .elems
+# .elems and aliases
+is p.elems,   2, '.elems';
 is p.Numeric, 2, '.Numeric';
 is p.Int,     2, '.Int';
 
@@ -26,8 +27,7 @@ is p.value, 40, 'set value';
 
 p.set(50, 60);
 
-is p.key,   50, 'setted key';
-is p.value, 60, 'setted value';
+is ~p, '50 => 60', '.set(k, v)';
 
 # p.clear;
 # 
@@ -36,8 +36,7 @@ is p.value, 60, 'setted value';
 
 p.replace(Pair::More.new(1, 2));
 
-is p.key,   1, 'replaced key';
-is p.value, 2, 'replaced value';
+is ~p, '1 => 2', '.replace(other)';
 
 is p.Str,  '1 => 2', '.Str';
 is p.gist, '1 => 2', '.gist';
@@ -45,15 +44,21 @@ is p.perl, 'Pair::More.new(1, 2)', '.perl';
 
 ## Coercions
 
-isa-ok p.Pair,  Pair,  'instance to pair';
-isa-ok p.Array, Array, 'instance to array';
-isa-ok p.Hash,  Hash,  'instance to hash';
-isa-ok p.List,  List,  'instance to list';
+is-deeply p.Pair,  1=>2,  'instance to pair';
+is-deeply p.Array, [1,2], 'instance to array';
+is-deeply p.List,  (1,2), 'instance to list';
+is-deeply p.Range, 1..2,  'instance to range';
 
-isa-ok Pair::More.Pair,  Pair,  'class to pair';
-isa-ok Pair::More.Array, Array, 'class to array';
-isa-ok Pair::More.Hash,  Hash,  'class to hash';
-isa-ok Pair::More.List,  List,  'class to list';
+## Type object
+
+is-deeply Pair::More.Pair,  Pair,  'type to pair';
+is-deeply Pair::More.Array, Array, 'type to array';
+is-deeply Pair::More.Hash,  Hash,  'type to hash';
+is-deeply Pair::More.List,  List,  'type to list';
+is-deeply Pair::More.Range, Range, 'type to range';
+
+is Pair::More.gist, '(More)',     'type .gist';
+is Pair::More.perl, 'Pair::More', 'type .perl';
 
 done-testing;
 
