@@ -40,6 +40,16 @@ class Duo does Duo::Role[Any, Any] {
 
     proto method Hash(|) is aka<hash> {*}
     multi method Hash(::?CLASS:U: --> Hash) { Hash }
+    multi method Hash(::?CLASS:D: :$object --> Hash) {
+        $object ?? :{$!key=>$!value}
+                !!  {$!key=>$!value};
+    }
+    multi method Hash(::?CLASS:D: :$key='key', :$value='value', :$named!, :$object --> Hash) {
+        $object ?? :{$key=>$!key, $value=>$!value}
+                !!  {$key=>$!key, $value=>$!value};
+    }
+    multi method Hash(::?CLASS:D: :$key!, :$value!, |c --> Hash) { self.Hash(:$key, :$value, :named, |c) }
+    multi method Hash(::?CLASS:D:  $key,   $value,  |c --> Hash) { self.Hash(:$key, :$value, :named, |c) }
 
     multi method Str (::?CLASS:D: --> Str) { "$!key.Str() => $!value.Str()" }
     multi method gist(::?CLASS:D: --> Str) { "$!key.gist() => $!value.gist()" }

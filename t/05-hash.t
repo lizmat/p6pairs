@@ -3,16 +3,16 @@ use v6;
 use Test;
 use Duo;
 
-my \p = Duo.new('a', 1);
+my \p = Duo.new(1, 2);
 
-is-deeply p.Hash,                                 {a=>1},               'hash';
-is-deeply p.Hash(:object),                       :{a=>1},               'hash :object';
-is-deeply p.Hash(:named),                         {key=>'a', value=>1}, 'hash :named';
-is-deeply p.Hash(:named, :object),               :{key=>'a', value=>1}, 'hash :named, :object';
-is-deeply p.Hash(key=>'k', value=>'v'),           {k=>'a', v=>1},       'hash kwargs';
-is-deeply p.Hash(key=>'k', value=>'v', :object), :{k=>'a', v=>1},       'hash kwargs :object';
-is-deeply p.Hash('k', 'v'),                       {k=>'a', v=>1},       'hash pos args';
-is-deeply p.Hash('k', 'v', :object),             :{k=>'a', v=>1},       'hash pos args :object';
+is-deeply p.Hash,                                 {1=>2},             'hash';
+is-deeply p.Hash(:object),                       :{1=>2},             'hash :object';
+is-deeply p.Hash(:named),                         {key=>1, value=>2}, 'hash :named';
+is-deeply p.Hash(:named, :object),               :{key=>1, value=>2}, 'hash :named, :object';
+is-deeply p.Hash(key=>'x', value=>'y'),           {x=>1, y=>2},       'hash kwargs';
+is-deeply p.Hash(key=>'x', value=>'y', :object), :{x=>1, y=>2},       'hash kwargs :object';
+is-deeply p.Hash('x', 'y'),                       {x=>1, y=>2},       'hash pos args';
+is-deeply p.Hash('x', 'y', :object),             :{x=>1, y=>2},       'hash pos args :object';
 
 done-testing;
 
