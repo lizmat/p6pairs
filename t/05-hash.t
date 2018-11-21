@@ -1,9 +1,9 @@
 
 use v6;
 use Test;
-use Pair::More;
+use Duo;
 
-my \p = Pair::More.new('a', 1);
+my \p = Duo.new('a', 1);
 
 is-deeply p.Hash,                                 {a=>1},               'hash';
 is-deeply p.Hash(:object),                       :{a=>1},               'hash :object';

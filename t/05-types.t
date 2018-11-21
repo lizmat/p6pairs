@@ -1,9 +1,9 @@
 
 use v6;
 use Test;
-use Pair::More;
+use Duo;
 
-my \p = Pair::More.new;
+my \p = Duo.new;
 
 ok p.key-type   =:= Any, 'default key type';
 ok p.value-type =:= Any, 'default value type';

@@ -1,10 +1,9 @@
 
-use Pair::More;
-# use Pair::More::Ops;
+use Duo;
 
-unit module Pair::More::Util;
+unit module Duo::Util;
 
-sub infix:<→>(|c) is export { Pair::More.new(|c) }
-sub    paired(|c) is export { Pair::More.new(|c) }
+sub       duo(|c) is export { Duo.new(|c) }
+sub infix:<→>(|c) is export { Duo.new(|c) }
 
 # vim: ft=perl6

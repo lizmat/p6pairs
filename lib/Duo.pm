@@ -1,7 +1,7 @@
 
 my multi sub trait_mod:<is>(Method:D \m, :$aka!) { m.package.^add_method(~$_, m) for @$aka }  # see Method::Also
 
-role Pair::More::Role[::KeyType, ::ValueType] {
+role Duo::Role[::KeyType, ::ValueType] {
     has KeyType   $.key   is rw;
     has ValueType $.value is rw;
 
@@ -15,7 +15,7 @@ role Pair::More::Role[::KeyType, ::ValueType] {
     method set(KeyType \k, ValueType \v --> ::?ROLE) is aka<update> { ($!key, $!value) = (k, v); self }
 }
 
-class Pair::More does Pair::More::Role[Any, Any] {
+class Duo does Duo::Role[Any, Any] {
 
     method elems(--> Int) is aka<Numeric Int> { 2 }
 
@@ -42,7 +42,7 @@ class Pair::More does Pair::More::Role[Any, Any] {
 
     multi method Str (::?CLASS:D: --> Str) { "$!key.Str() => $!value.Str()" }
     multi method gist(::?CLASS:D: --> Str) { "$!key.gist() => $!value.gist()" }
-    multi method perl(::?CLASS:D: --> Str) { "Pair::More.new($!key.perl(), $!value.perl())" }
+    multi method perl(::?CLASS:D: --> Str) { "Duo.new($!key.perl(), $!value.perl())" }
 
     method fmt(Str $fmt='(%s, %s)', Bool $reverse?, :$gist, :$perl --> Str) {
         sprintf $fmt, $reverse ?? self.List.reverse !! self.List;

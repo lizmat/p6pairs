@@ -1,15 +1,13 @@
 {
   "perl"          : "6.c",
-  "name"          : "Pair::More",
+  "name"          : "Duo",
   "version"       : "0.0.1",
   "description"   : "A simple pair object for Perl 6",
   "authors"       : [ "Lucas Buchala" ],
   "license"       : "Artistic-2.0",
   "provides"      : {
-                      "Pair::More"       : "lib/Pair/More.pm",
-                      "Pair::More::Hash" : "lib/Pair/More/Hash.pm",
-                      "Pair::More::List" : "lib/Pair/More/List.pm",
-                      "Pair::More::Util" : "lib/Pair/More/Util.pm"
+                      "Duo"       : "lib/Duo.pm",
+                      "Duo::Util" : "lib/Duo/Util.pm"
                     },
   "depends"       : [],
   "build-depends" : [],
