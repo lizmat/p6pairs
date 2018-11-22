@@ -3,12 +3,15 @@ use v6;
 use Test;
 use Duo;
 
-my \p = Duo.new;
+my \o = Duo.new;
 
-ok p.key-type   =:= Any, 'default key type';
-ok p.value-type =:= Any, 'default value type';
+# ok o.key-of   =:= Any
+# ok o.value-of =:= Any
 
-is-deeply p.is-symmetric, True, 'is symmetric';
+is-deeply o.key-of,   Any, 'default key type';
+is-deeply o.value-of, Any, 'default value type';
+
+is-deeply o.is-symmetric, True, 'is symmetric';
 
 done-testing;
 
