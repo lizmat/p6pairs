@@ -53,9 +53,7 @@ Operator
   k ⇾ v
   k ⊳ v
 
-https://github.com/rakudo/rakudo/blob/master/src/core/Pair.pm6
-
-Core Perl 6 Pair class
+Core Perl 6 Pair class (src/core/Pair.pm6):
 
   class Pair does Associative {
     has $.key   is default(Nil);
@@ -133,4 +131,24 @@ Positional:
 
 Method names:
   mirror, mirrored
-  homogeneous, heterogeneous k/v types
+
+  for k/v types: method is-heterogenous(--> Bool) { not self.is-homogeneous }
+
+  key-type, value-type
+  key-of, value-of
+
+  reversible
+  invertible
+  flippable
+
+---
+
+Remove role to test problems:
+
+class Duo {
+    # also does Duo::Role[Any, Any];
+    has Any $.key   is rw;
+    has Any $.value is rw;
+    multi method new($key, $value = Any) { self.new(:$key, :$value) }
+    method set(\k, \v) is aka<update> { ($!key, $!value) = (k, v); self }
+}
