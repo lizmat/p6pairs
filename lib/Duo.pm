@@ -40,6 +40,10 @@ class Duo does Duo::Role[Any, Any] {
     multi method replace(Complex  \c --> ::?CLASS:D) { ($!key, $!value) = (c.re,  c.im);    self }
     multi method replace(Rational \r --> ::?CLASS:D) { ($!key, $!value) = r.nude; self }
     multi method replace(List     \l --> ::?CLASS:D) { ($!key, $!value) = l; self }
+    multi method replace(IntStr     \a --> ::?CLASS:D) { ($!key, $!value) = (a.Int,     a.Str); self }
+    multi method replace(NumStr     \a --> ::?CLASS:D) { ($!key, $!value) = (a.Num,     a.Str); self }
+    multi method replace(RatStr     \a --> ::?CLASS:D) { ($!key, $!value) = (a.Rat,     a.Str); self }
+    multi method replace(ComplexStr \a --> ::?CLASS:D) { ($!key, $!value) = (a.Complex, a.Str); self }
 
     method Duo  (--> Duo) { self }
     method Pair (--> Pair)  is aka<pair>  { self ??  ($!key=>$!value) !! Pair  }
@@ -51,6 +55,11 @@ class Duo does Duo::Role[Any, Any] {
     method Rat    (--> Rat)     { self ??     Rat.new($!key, $!value) !! Rat     }
     method FatRat (--> FatRat)  { self ??  FatRat.new($!key, $!value) !! FatRat  }
     method Complex(--> Complex) { self ?? Complex.new($!key, $!value) !! Complex }
+
+    method IntStr    (--> IntStr)     { self ??     IntStr.new($!key, $!value) !! IntStr }
+    method NumStr    (--> NumStr)     { self ??     NumStr.new($!key, $!value) !! NumStr }
+    method RatStr    (--> RatStr)     { self ??     RatStr.new($!key, $!value) !! RatStr }
+    method ComplexStr(--> ComplexStr) { self ?? ComplexStr.new($!key, $!value) !! ComplexStr }
 
     proto method Hash(|) is aka<hash> {*}
     multi method Hash(::?CLASS:U: --> Hash) { Hash }

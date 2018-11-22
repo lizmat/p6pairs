@@ -24,6 +24,18 @@ is-deeply Duo.List,  List,  'type to list';
 is-deeply Duo.Slip,  Slip,  'type to slip';
 is-deeply Duo.Hash,  Hash,  'type to hash';
 
+## Allomorphs
+
+is-deeply Duo.new(< 10   >).IntStr,     < 10   >, 'instance to IntStr';
+is-deeply Duo.new(< 1e0  >).NumStr,     < 1e0  >, 'instance to NumStr';
+is-deeply Duo.new(< 1/2  >).RatStr,     < 1/2  >, 'instance to RatStr';
+is-deeply Duo.new(< 1+2i >).ComplexStr, < 1+2i >, 'instance to ComplexStr';
+
+is-deeply Duo.IntStr,     IntStr,     'type to IntStr';
+is-deeply Duo.NumStr,     NumStr,     'type to NumStr';
+is-deeply Duo.RatStr,     RatStr,     'type to RatStr';
+is-deeply Duo.ComplexStr, ComplexStr, 'type to ComplexStr';
+
 done-testing;
 
 # vim: ft=perl6
