@@ -2,8 +2,8 @@
 my multi sub trait_mod:<is>(Method:D \m, :$aka!) { m.package.^add_method(~$_, m) for @$aka }  # see Method::Also
 
 role Duo::Role[::KeyType, ::ValueType] {
-    has KeyType   $.key   is rw;
-    has ValueType $.value is rw;
+    has KeyType   $.key   is rw = Any;
+    has ValueType $.value is rw = Any;
 
     method   key-of { KeyType   }  # (--> KeyType), dies with X::TypeCheck::Return
     method value-of { ValueType }  # (--> ValueType)
