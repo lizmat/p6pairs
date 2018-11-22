@@ -5,18 +5,18 @@ role Duo::Role[::KeyType, ::ValueType] {
     has KeyType   $.key   is rw;
     has ValueType $.value is rw;
 
-    method   key-type { KeyType   }  # (--> KeyType)
-    method value-type { ValueType }  # (--> ValueType)
+    method   key-of { KeyType   }  # (--> KeyType), dies with X::TypeCheck::Return
+    method value-of { ValueType }  # (--> ValueType)
 
-    method is-symmetric(--> Bool) is aka<is-reflexive is-homogeneous> { self.key-type =:= self.value-type }  # { KeyType =:= ValueType }
+    # KeyType =:= ValueType doesn't work, returns false for types [Any, Any]
+    method is-symmetric(--> Bool) is aka<is-reflexive> { self.key-of =:= self.value-of }
 
-    multi method new(KeyType $key, ValueType $value --> ::?ROLE) { self.new(:$key, :$value) }
+    multi method new(::?CLASS:U: KeyType $key, ValueType $value --> ::?ROLE:D) { self.new(:$key, :$value) }
 
-    method set(KeyType \k, ValueType \v --> ::?ROLE) is aka<update> { ($!key, $!value) = (k, v); self }
+    method set(KeyType \k, ValueType \v --> ::?ROLE:D) is aka<update> { ($!key, $!value) = (k, v); self }
 }
 
 class Duo does Duo::Role[Any, Any] {
-
     method elems(--> Int) is aka<Numeric Int> { 2 }
 
     proto method expand(::?CLASS:U: Any, Any) {*}
@@ -30,17 +30,31 @@ class Duo does Duo::Role[Any, Any] {
 
     method clear     (--> ::?CLASS) is aka<reset>            { ($!key, $!value) = (Nil, Nil);       self }
     method inverted  (--> ::?CLASS) is aka<reversed flipped> { ($!key, $!value) = ($!value, $!key); self }
-    method replace(\p --> ::?CLASS)                          { ($!key, $!value) = (p.key, p.value); self }
 
-    method Pair (--> Pair)                { self ??  ($!key=>$!value) !! Pair  }
-    method List (--> List) is aka<list>   { self ??  ($!key, $!value) !! List  }
-    method Array(--> Array)               { self ??  [$!key, $!value] !! Array }
+    multi method new(::?CLASS:U: \obj) { self.new.replace(obj) }
+
+    proto method replace(Any) {*}
+    multi method replace(Duo      \d --> ::?CLASS:D) { ($!key, $!value) = (d.key, d.value); self }
+    multi method replace(Pair     \p --> ::?CLASS:D) { ($!key, $!value) = (p.key, p.value); self }
+    multi method replace(Range    \r --> ::?CLASS:D) { ($!key, $!value) = (r.min, r.max);   self }
+    multi method replace(Complex  \c --> ::?CLASS:D) { ($!key, $!value) = (c.re,  c.im);    self }
+    multi method replace(Rational \r --> ::?CLASS:D) { ($!key, $!value) = r.nude; self }
+    multi method replace(List     \l --> ::?CLASS:D) { ($!key, $!value) = l; self }
+
+    method Duo  (--> Duo) { self }
+    method Pair (--> Pair)  is aka<pair>  { self ??  ($!key=>$!value) !! Pair  }
+    method List (--> List)                { self ??  ($!key, $!value) !! List  }
+    method Array(--> Array) is aka<array> { self ??  [$!key, $!value] !! Array }
     method Range(--> Range) is aka<range> { self ??  ($!key..$!value) !! Range }
-    method Slip (--> Slip)                { self ?? |($!key, $!value) !! Slip  }
+    method Slip (--> Slip)  is aka<slip>  { self ?? |($!key, $!value) !! Slip  }
+
+    method Rat    (--> Rat)     { self ??     Rat.new($!key, $!value) !! Rat     }
+    method FatRat (--> FatRat)  { self ??  FatRat.new($!key, $!value) !! FatRat  }
+    method Complex(--> Complex) { self ?? Complex.new($!key, $!value) !! Complex }
 
     proto method Hash(|) is aka<hash> {*}
     multi method Hash(::?CLASS:U: --> Hash) { Hash }
-    multi method Hash(::?CLASS:D: :$object --> Hash) {
+    multi method Hash(::?CLASS:D: :$object, *%_ () --> Hash) {
         $object ?? :{$!key=>$!value}
                 !!  {$!key=>$!value};
     }
@@ -53,11 +67,14 @@ class Duo does Duo::Role[Any, Any] {
 
     multi method Str (::?CLASS:D: --> Str) { "$!key.Str() => $!value.Str()" }
     multi method gist(::?CLASS:D: --> Str) { "$!key.gist() => $!value.gist()" }
-    multi method perl(::?CLASS:D: --> Str) { "Duo.new($!key.perl(), $!value.perl())" }
+    multi method perl(::?CLASS:D: --> Str) { "duo($!key.perl(), $!value.perl())" }
 
     method fmt(Str $fmt='(%s, %s)', Bool $reverse?, :$gist, :$perl --> Str) {
         sprintf $fmt, $reverse ?? self.List.reverse !! self.List;
     }
 }
+
+multi sub infix:<eqv>(Duo:D \a, Duo:D \b --> Bool)  { a.key eqv b.key and a.value eqv b.value }
+multi sub infix:<cmp>(Duo:D \a, Duo:D \b --> Order) { a.key cmp b.key or  a.value cmp b.value }
 
 # vim: ft=perl6
