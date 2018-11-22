@@ -19,6 +19,8 @@ role Duo::Role[::KeyType, ::ValueType] {
 class Duo does Duo::Role[Any, Any] {
     method elems(--> Int) is aka<Numeric Int> { 2 }
 
+    submethod CALL-ME(::?CLASS:U: |c) { self.new(|c) }
+
     proto method expand(::?CLASS:U: Any, Any) {*}
     multi method expand(List \k, List \v --> Seq) { (k X v).map: { self.new(|$_) } }
     multi method expand(List \k, \v --> Seq) { k.map: { self.new(:key($_), :value(v))  } }

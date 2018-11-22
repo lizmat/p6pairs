@@ -29,6 +29,11 @@ p.set(50, 60);
 
 is ~p, '50 => 60', '.set(k, v)';
 
+is-deeply Duo(1, 2),             Duo.new(1, 2), 'can create with Duo(k, v)';
+is-deeply Duo(key=>1, value=>2), Duo.new(1, 2), 'can create with Duo(:args)';
+is-deeply Duo(1 => 2),           Duo.new(1, 2), 'can create with Duo(Pair)';
+is-deeply Duo([1, 2]),           Duo.new(1, 2), 'can create with Duo([...])';
+
 # p.clear;
 # 
 # ok !defined p.key,   'cleared .key';
